@@ -2,7 +2,7 @@
 /*
 Plugin Name: BannerFlow Ad Shortcode
 Description: Adds a shortcode to Wordpress to show BannerFlow ad (including responsive, preload and adblocking redirecting).
-Version: 1.0.0
+Version: 1.1.0
 Author: A.F.Schuurman
 Author URI: http://health-check-team.example.com
 Text Domain: bf_ad_sc
@@ -85,6 +85,11 @@ function bf_ad_shortcode( $atts ) {
 
 	if ( $atts['adblock_detection'] == 'true' ) {
 		wp_enqueue_script( 'adblocker' );
+	}
+
+	// For Mobile Casino theme
+	if ( function_exists( 'add_trackers_to_url' ) ) {
+		$atts['target_url'] = add_trackers_to_url( $atts['target_url'] );
 	}
 
 	ob_start();
