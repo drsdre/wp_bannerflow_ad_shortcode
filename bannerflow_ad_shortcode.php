@@ -151,9 +151,7 @@ function bf_ad_shortcode( $atts ) {
 
 		<?php if ( $atts['adblock_detection'] == 'true' ): ?>
         window.onload = function () {
-            if (typeof blockAdBlock === 'undefined') {
-                adBlockDetected();
-            } else {
+            if (typeof blockAdBlock !== 'undefined') {
                 blockAdBlock.onDetected(function() {
                     var query_string = location.search.substring(1);
                     var target_url = '<?php echo $atts['target_url'] ?>';
