@@ -2,7 +2,7 @@
 /*
 Plugin Name: BannerFlow Ad Shortcode
 Description: Adds a shortcode to Wordpress to show BannerFlow ad (including responsive, preload and adblocking redirecting).
-Version: 1.1.0
+Version: 1.1.1
 Author: A.F.Schuurman
 Author URI: https://github.com/drsdre/wp_bannerflow_ad_shortcode
 Text Domain: bf_ad_sc
@@ -39,8 +39,6 @@ function bf_ad_init() {
 
 	add_filter( 'mce_external_plugins', 'drsdre\shortcodes\bf_ad_add_buttons' );
 	add_filter( 'mce_buttons', 'drsdre\shortcodes\bf_ad_register_buttons' );
-
-	wp_register_script( 'block_detector', plugins_url( '/js/detector.js', __FILE__ ), [], '1.0.0', 'all' );
 }
 
 add_action( 'init', 'drsdre\shortcodes\bf_ad_init' );
@@ -65,6 +63,12 @@ function bf_ad_tinymce_extra_vars() { ?>
 }
 
 add_action( 'after_wp_tiny_mce', 'drsdre\shortcodes\bf_ad_tinymce_extra_vars' );
+
+function bf_ad_scripts() {
+	wp_register_script( 'block_detector', plugins_url( '/js/detector.js', __FILE__ ), [], '1.0.0', 'all' );
+}
+
+add_action( 'wp_enqueue_scripts', 'drsdre\shortcodes\bf_ad_scripts' );
 
 function bf_ad_shortcode( $atts ) {
 	static $bf_ad_sc_id = 1;
@@ -108,7 +112,7 @@ function bf_ad_shortcode( $atts ) {
                     fileref.setAttribute("href", filename);
                 }
                 if (typeof fileref != "undefined") {
-                   insertElement.appendChild(fileref);
+                    insertElement.appendChild(fileref);
                 }
             }
         }
