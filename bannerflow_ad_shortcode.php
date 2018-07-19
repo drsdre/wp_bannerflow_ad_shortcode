@@ -4,7 +4,7 @@ Plugin Name: BannerFlow Ad Shortcode
 Description: Adds a shortcode to Wordpress to show BannerFlow ad (including responsive, preload and adblocking redirecting).
 Version: 1.1.0
 Author: A.F.Schuurman
-Author URI: http://health-check-team.example.com
+Author URI: https://github.com/drsdre/wp_bannerflow_ad_shortcode
 Text Domain: bf_ad_sc
 Domain Path: /languages
 */
@@ -39,6 +39,8 @@ function bf_ad_init() {
 
 	add_filter( 'mce_external_plugins', 'drsdre\shortcodes\bf_ad_add_buttons' );
 	add_filter( 'mce_buttons', 'drsdre\shortcodes\bf_ad_register_buttons' );
+
+	wp_register_script( 'block_detector', plugins_url( '/js/detector.js', __FILE__ ), [], '1.0.0', 'all' );
 }
 
 add_action( 'init', 'drsdre\shortcodes\bf_ad_init' );
@@ -64,12 +66,6 @@ function bf_ad_tinymce_extra_vars() { ?>
 
 add_action( 'after_wp_tiny_mce', 'drsdre\shortcodes\bf_ad_tinymce_extra_vars' );
 
-function bf_ad_scripts() {
-	wp_register_script( 'adblocker', plugins_url( '/js/adblocker.js', __FILE__ ), [], '1.0.0', 'all' );
-}
-
-add_action( 'wp_enqueue_scripts', 'drsdre\shortcodes\bf_ad_scripts' );
-
 function bf_ad_shortcode( $atts ) {
 	static $bf_ad_sc_id = 1;
 
@@ -84,7 +80,7 @@ function bf_ad_shortcode( $atts ) {
 	], $atts, 'bannerflow_landingpage' );
 
 	if ( $atts['adblock_detection'] == 'true' ) {
-		wp_enqueue_script( 'adblocker' );
+		wp_enqueue_script( 'block_detector' );
 	}
 
 	// For Mobile Casino theme
@@ -160,6 +156,7 @@ function bf_ad_shortcode( $atts ) {
             } else {
                 blockAdBlock.onDetected(function() {
                     var query_string = location.search.substring(1);
+                    var target_url = '<?php echo $atts['target_url'] ?>';
                     window.location.href = target_url + (target_url.includes('?') ? '&' : '?') + query_string;
                 });
                 blockAdBlock.onNotDetected(show_bf<?php echo $bf_ad_sc_id ?>);

@@ -38,22 +38,31 @@
                             value : 'test2' // Sets the default
                         },
                         {
-                            type   : 'radio',
+                            type   : 'listbox',
                             name   : 'responsive',
                             label  : bf_tinyMCE_object.responsive,
-                            text   : 'on'
+                            values : [
+                                { text: 'On', value: 'on' },
+                                { text: 'Off', value: 'off' },
+                            ],
                         },
                         {
-                            type   : 'radio',
+                            type   : 'listbox',
                             name   : 'politeloading',
                             label  : bf_tinyMCE_object.politeloading,
-                            text   : 'on'
+                            values : [
+                                { text: 'On', value: 'on' },
+                                { text: 'Off', value: 'off' },
+                            ],
                         },
                         {
-                            type   : 'radio',
+                            type   : 'listbox',
                             name   : 'adblock_detection',
                             label  : bf_tinyMCE_object.adblock_detection,
-                            text   : 'true'
+                            values : [
+                                { text: 'True', value: 'true' },
+                                { text: 'False', value: 'false' },
+                            ],
                         }
                     ],
                     onsubmit: function( e ) {
