@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: BannerFlow Ad Shortcode
-Description: Adds a shortcode to Wordpress to show BannerFlow ad (including responsive, preload and adblocking redirecting).
-Version: 1.1.1
+Description: Adds a shortcode to Wordpress to show BannerFlow ad (including responsive, preload and adblocking redirecting). Fixed for Gutenberg editor.
+Version: 1.2
 Author: A.F.Schuurman
 Author URI: https://github.com/drsdre/wp_bannerflow_ad_shortcode
 Text Domain: bf_ad_sc
