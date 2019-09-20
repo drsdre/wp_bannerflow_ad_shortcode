@@ -43,27 +43,6 @@ function bf_ad_init() {
 
 add_action( 'init', 'drsdre\shortcodes\bf_ad_init' );
 
-function bf_ad_tinymce_extra_vars() { ?>
-    <script type="text/javascript">
-        var bf_tinyMCE_object = <?php echo json_encode(
-				[
-					'button_name'       => esc_html__( 'BannerFlow Ad', 'bf_ad_sc' ),
-					'window_title'      => esc_html__( 'BannerFlow Ad Shortcode', 'bf_ad_sc' ),
-					'bfid_landscape'    => esc_html__( 'Banner ID Landscape', 'bf_ad_sc' ),
-					'bfid_portrait'     => esc_html__( 'Banner ID Portrait', 'bf_ad_sc' ),
-					'responsive'        => esc_html__( 'Responsive (fill screen)', 'bf_ad_sc' ),
-					'politeloading'     => esc_html__( 'Polite loading (show GIF before loading)', 'bf_ad_sc' ),
-					'target_url'        => esc_html__( 'Target URL', 'bf_ad_sc' ),
-					'targetwindow'      => esc_html__( 'Target option', 'bf_ad_sc' ),
-					'adblock_detection' => esc_html__( 'Ad block detection and auto redirect', 'bf_ad_sc' ),
-				]
-			);
-			?>;
-    </script><?php
-}
-
-add_action( 'after_wp_tiny_mce', 'drsdre\shortcodes\bf_ad_tinymce_extra_vars' );
-
 function bf_ad_scripts() {
 	wp_register_script( 'block_detector', plugins_url( '/js/detector.js', __FILE__ ), [], '1.0.0', 'all' );
 }

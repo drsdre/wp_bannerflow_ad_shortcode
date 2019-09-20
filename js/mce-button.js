@@ -1,34 +1,34 @@
 (function() {
     tinymce.PluginManager.add('bf_ad_sc', function( editor, url ) {
         editor.addButton( 'bf_ad_sc', {
-            text: bf_tinyMCE_object.button_name,
+            text: 'BannerFlow Ad',
             icon: false,
             onclick: function() {
                 editor.windowManager.open( {
-                    title: bf_tinyMCE_object.button_title,
+                    title: 'BannerFlow Ad Shortcode',
                     body: [
                         {
                             type: 'textbox',
                             name: 'bfid_landscape',
-                            label: bf_tinyMCE_object.bfid_landscape,
+                            label: 'Banner ID Landscape',
                             value: '',
                         },
                         {
                             type: 'textbox',
                             name: 'bfid_portrait',
-                            label: bf_tinyMCE_object.bfid_portrait,
+                            label: 'Banner ID Portrait',
                             value: '',
                         },
                         {
                             type: 'textbox',
                             name: 'target_url',
-                            label: bf_tinyMCE_object.target_url,
+                            label: 'Target URL',
                             value: '',
                         },
                         {
                             type   : 'listbox',
                             name   : 'targetwindow',
-                            label  : bf_tinyMCE_object.targetwindow,
+                            label  : 'Target option',
                             values : [
                                 { text: 'New tab/window', value: '_blank' },
                                 { text: 'Same frame as opened', value: '_self' },
@@ -40,7 +40,7 @@
                         {
                             type   : 'listbox',
                             name   : 'responsive',
-                            label  : bf_tinyMCE_object.responsive,
+                            label  : 'Responsive (fill screen)',
                             values : [
                                 { text: 'On', value: 'on' },
                                 { text: 'Off', value: 'off' },
@@ -49,7 +49,7 @@
                         {
                             type   : 'listbox',
                             name   : 'politeloading',
-                            label  : bf_tinyMCE_object.politeloading,
+                            label  : 'Polite loading (show GIF before loading)',
                             values : [
                                 { text: 'On', value: 'on' },
                                 { text: 'Off', value: 'off' },
@@ -58,7 +58,7 @@
                         {
                             type   : 'listbox',
                             name   : 'adblock_detection',
-                            label  : bf_tinyMCE_object.adblock_detection,
+                            label  : 'Ad block detection and auto redirect',
                             values : [
                                 { text: 'True', value: 'true' },
                                 { text: 'False', value: 'false' },
