@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: BannerFlow Ad Shortcode
-Description: Adds a shortcode to Wordpress to show BannerFlow ad (including responsive, preload and adblocking redirecting). Fixed for Gutenberg editor.
-Version: 1.2
+Description: Adds a shortcode to Wordpress to show BannerFlow ad (including responsive, preload and adblocking redirecting). Fixed for Gutenberg editor. Also support new BF tag version (version='2')
+Version: 2.0
 Author: A.F.Schuurman
 Author URI: https://github.com/drsdre/wp_bannerflow_ad_shortcode
 Text Domain: bf_ad_sc
@@ -55,11 +55,14 @@ function bf_ad_shortcode( $atts ) {
 	$atts = shortcode_atts( [
 		'bfid_landscape'    => '',
 		'bfid_portrait'     => '',
+        'did'               => 'not set',
 		'responsive'        => 'on',
+        'deeplink'          => 'on',
 		'politeloading'     => 'off',
 		'target_url'        => '',
 		'targetwindow'      => '_top',
 		'adblock_detection' => 'false',
+        'version'           => 1,
 	], $atts, 'bannerflow_landingpage' );
 
 	if ( $atts['adblock_detection'] == 'true' ) {
@@ -71,9 +74,11 @@ function bf_ad_shortcode( $atts ) {
 		$atts['target_url'] = add_trackers_to_url( $atts['target_url'] );
 	}
 
+	$bf_span_id = "bannerflow_sc_{$bf_ad_sc_id}_ad";
+
 	ob_start();
 	?>
-    <span id="bannerflow_sc_<?php echo $bf_ad_sc_id ?>_ad"></span>
+    <span id="<?php echo $bf_span_id ?>"></span>
     <script>
         var bf_ad_sc<?php echo $bf_ad_sc_id ?>_current_bf_id;
 
@@ -98,9 +103,11 @@ function bf_ad_shortcode( $atts ) {
 
         function show_bf<?php echo $bf_ad_sc_id ?>() {
             var bf_id;
+            var did = '<?php echo $atts['did'] ?>';
             var bfid_landscape = '<?php echo $atts['bfid_landscape'] ?>';
             var bfid_portrait = '<?php echo $atts['bfid_portrait'] ?>';
             var responsive = '<?php echo $atts['responsive'] ?>';
+            var deeplink = '<?php echo $atts['deeplink'] ?>';
             var politeloading = '<?php echo $atts['politeloading'] ?>';
             var target_url = '<?php echo $atts['target_url'] ?>';
             var targetwindow = '<?php echo $atts['targetwindow'] ?>';
@@ -114,10 +121,9 @@ function bf_ad_shortcode( $atts ) {
             if (bf_ad_sc<?php echo $bf_ad_sc_id ?>_current_bf_id !== bf_id) {
                 bf_ad_sc<?php echo $bf_ad_sc_id ?>_current_bf_id = bf_id;
 
-                var element = document.querySelectorAll('[id^=bf]');
-                Array.prototype.forEach.call(element, function (node) {
-                    node.parentNode.removeChild(node);
-                });
+                document.getElementById('<?php echo $bf_span_id ?>').innerHTML = "";
+
+                <?php if ($atts['version']==1): ?>
                 loadjscssfile('https://embed.bannerflow.com/' + bf_id +
                     '?targeturl=' + target_url +
                     '&targetwindow=' + targetwindow +
@@ -126,6 +132,17 @@ function bf_ad_shortcode( $atts ) {
                     'js',
                     document.getElementById('bannerflow_sc_<?php echo $bf_ad_sc_id ?>_ad')
                 );
+                <?php else: ?>
+                loadjscssfile('https://c.bannerflow.net/a/' + bf_id +
+                    '?did=' + did +
+                    '&deeplink=' + deeplink +
+                    '&targetwindow=' + targetwindow +
+                    '&responsive=' + responsive +
+                    '&redirecturl=' + target_url,
+                    'js',
+                    document.getElementById('bannerflow_sc_<?php echo $bf_ad_sc_id ?>_ad')
+                );
+                <?php endif; ?>
             }
         }
 
@@ -163,3 +180,5 @@ function bf_ad_shortcode( $atts ) {
 }
 
 add_shortcode( 'bannerflow_ad', 'drsdre\shortcodes\bf_ad_shortcode' );
+
+
