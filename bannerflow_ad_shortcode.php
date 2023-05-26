@@ -43,18 +43,6 @@ function bf_ad_init() {
 
 add_action( 'init', 'drsdre\shortcodes\bf_ad_init' );
 
-function bf_ad_scripts() {
-	wp_register_script(
-            'block_detector',
-            plugins_url( '/js/detector.js', __FILE__ ),
-            [],
-            '3.2.1',
-            'all'
-    );
-}
-
-add_action( 'wp_enqueue_scripts', 'drsdre\shortcodes\bf_ad_scripts' );
-
 function bf_ad_shortcode( $atts ) {
 	static $bf_ad_sc_id = 1;
 
@@ -159,18 +147,13 @@ function bf_ad_shortcode( $atts ) {
 
 		<?php if ( $atts['adblock_detection'] == 'true' ): ?>
         window.onload = function () {
-            if (typeof blockAdBlock !== 'undefined') {
-                blockAdBlock.setOption({
-                    debug: true,
-                });
-                blockAdBlock.onDetected(function() {
-                    var query_string = location.search.substring(1);
-                    var target_url = '<?php echo $atts['adblock_redirect_url'] ?? $atts['target_url'] ?>';
-                    window.location.href = target_url + (target_url.includes('?') ? '&' : '?') + query_string;
-                });
-                blockAdBlock.onNotDetected(show_bf<?php echo $bf_ad_sc_id ?>);
-            }
-
+            fetch('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js').then(() => {
+                show_bf<?php echo $bf_ad_sc_id ?>();
+            }) .catch(() => {
+                var query_string = location.search.substring(1);
+                var target_url = '<?php echo $atts['adblock_redirect_url'] ?? $atts['target_url'] ?>';
+                window.location.href = target_url + (target_url.includes('?') ? '&' : '?') + query_string;
+            });
         }
 		<?php else: ?>
         show_bf<?php echo $bf_ad_sc_id ?>();
