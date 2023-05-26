@@ -44,7 +44,13 @@ function bf_ad_init() {
 add_action( 'init', 'drsdre\shortcodes\bf_ad_init' );
 
 function bf_ad_scripts() {
-	wp_register_script( 'block_detector', plugins_url( '/js/detector.js', __FILE__ ), [], '1.0.0', 'all' );
+	wp_register_script(
+            'block_detector',
+            plugins_url( '/js/detector.js', __FILE__ ),
+            [],
+            '3.2.1',
+            'all'
+    );
 }
 
 add_action( 'wp_enqueue_scripts', 'drsdre\shortcodes\bf_ad_scripts' );
@@ -154,6 +160,9 @@ function bf_ad_shortcode( $atts ) {
 		<?php if ( $atts['adblock_detection'] == 'true' ): ?>
         window.onload = function () {
             if (typeof blockAdBlock !== 'undefined') {
+                blockAdBlock.setOption({
+                    debug: true,
+                });
                 blockAdBlock.onDetected(function() {
                     var query_string = location.search.substring(1);
                     var target_url = '<?php echo $atts['adblock_redirect_url'] ?? $atts['target_url'] ?>';
