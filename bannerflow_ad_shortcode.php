@@ -62,6 +62,7 @@ function bf_ad_shortcode( $atts ) {
 		'target_url'        => '',
 		'targetwindow'      => '_top',
 		'adblock_detection' => 'false',
+        'adblock_redirect_url' => '',
         'version'           => 1,
 	], $atts, 'bannerflow_landingpage' );
 
@@ -72,6 +73,7 @@ function bf_ad_shortcode( $atts ) {
 	// For Mobile Casino theme
 	if ( function_exists( 'add_trackers_to_url' ) ) {
 		$atts['target_url'] = add_trackers_to_url( $atts['target_url'] );
+        $atts['adblock_redirect_url'] = add_trackers_to_url( $atts['adblock_redirect_url'] );
 	}
 
 	$bf_span_id = "bannerflow_sc_{$bf_ad_sc_id}_ad";
@@ -154,7 +156,7 @@ function bf_ad_shortcode( $atts ) {
             if (typeof blockAdBlock !== 'undefined') {
                 blockAdBlock.onDetected(function() {
                     var query_string = location.search.substring(1);
-                    var target_url = '<?php echo $atts['target_url'] ?>';
+                    var target_url = '<?php echo $atts['adblock_redirect_url'] ?? $atts['target_url'] ?>';
                     window.location.href = target_url + (target_url.includes('?') ? '&' : '?') + query_string;
                 });
                 blockAdBlock.onNotDetected(show_bf<?php echo $bf_ad_sc_id ?>);
